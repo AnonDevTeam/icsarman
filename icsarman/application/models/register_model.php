@@ -15,7 +15,7 @@ class Register_model extends CI_Model {
         $data['type'] = $this->input->post('type');
         $data['referred_by'] = $this->input->post('referred_by');
         $data['address'] = $this->input->post('address');
-        $this->db->insert('users', $data);
+        $this->db->insert('user_profile', $data);
     }
 }
 ?>
