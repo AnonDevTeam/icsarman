@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `material` (
   `author` varchar(128) NOT NULL,
   `year` int(4) NOT NULL,
   `date_added` date NOT NULL,
+  `quantity` int(2) NOT NULL,
   `status` int(1) NOT NULL,
   `picture` varchar(4) NOT NULL,
   PRIMARY KEY (`material_id`)
