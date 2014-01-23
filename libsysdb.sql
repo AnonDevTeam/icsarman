@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 21, 2014 at 06:47 AM
+-- Generation Time: Jan 23, 2014 at 11:13 AM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.16
 
@@ -42,14 +42,16 @@ CREATE TABLE IF NOT EXISTS `book` (
 --
 
 CREATE TABLE IF NOT EXISTS `borrowed_material` (
-  `date_borrowed` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `material_id` int(5) NOT NULL,
+  `transaction_id` int(5) NOT NULL AUTO_INCREMENT,
   `id` int(5) NOT NULL,
+  `material_id` int(5) NOT NULL,
   `is_approved` int(1) NOT NULL,
-  PRIMARY KEY (`date_borrowed`),
+  `date_borrowed` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `due_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`transaction_id`),
   KEY `material_id` (`material_id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -59,8 +61,8 @@ CREATE TABLE IF NOT EXISTS `borrowed_material` (
 
 CREATE TABLE IF NOT EXISTS `magazine` (
   `material_id` int(5) NOT NULL,
-  `month` int(2) NOT NULL,
   `volume_number` varchar(32) NOT NULL,
+  `month` int(2) NOT NULL,
   PRIMARY KEY (`material_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -89,10 +91,12 @@ CREATE TABLE IF NOT EXISTS `material` (
 --
 
 CREATE TABLE IF NOT EXISTS `material_tag` (
+  `auxil_id` int(5) NOT NULL AUTO_INCREMENT,
   `material_id` int(5) NOT NULL,
   `tag` varchar(15) NOT NULL,
-  PRIMARY KEY (`material_id`,`tag`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`auxil_id`),
+  KEY `material_id` (`material_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -113,13 +117,14 @@ CREATE TABLE IF NOT EXISTS `other` (
 --
 
 CREATE TABLE IF NOT EXISTS `reserved_material` (
+  `transaction_id` int(5) NOT NULL AUTO_INCREMENT,
   `id` int(5) NOT NULL,
-  `date_reserved` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `material_id` int(5) NOT NULL,
-  PRIMARY KEY (`date_reserved`),
+  `date_reserved` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`transaction_id`),
   KEY `id` (`id`),
   KEY `material_id` (`material_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -175,8 +180,8 @@ ALTER TABLE `book`
 -- Constraints for table `borrowed_material`
 --
 ALTER TABLE `borrowed_material`
-  ADD CONSTRAINT `borrowed_material_ibfk_2` FOREIGN KEY (`id`) REFERENCES `user_profile` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `borrowed_material_ibfk_1` FOREIGN KEY (`material_id`) REFERENCES `material` (`material_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `borrowed_material_ibfk_1` FOREIGN KEY (`material_id`) REFERENCES `material` (`material_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `borrowed_material_ibfk_2` FOREIGN KEY (`id`) REFERENCES `user_profile` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `magazine`
@@ -200,8 +205,8 @@ ALTER TABLE `other`
 -- Constraints for table `reserved_material`
 --
 ALTER TABLE `reserved_material`
-  ADD CONSTRAINT `reserved_material_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `magazine` (`material_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `reserved_material_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user_profile` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `reserved_material_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user_profile` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `reserved_material_ibfk_2` FOREIGN KEY (`material_id`) REFERENCES `magazine` (`material_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `sp_thesis`
