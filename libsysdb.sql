@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 23, 2014 at 11:13 AM
+-- Generation Time: Jan 28, 2014 at 06:39 AM
 -- Server version: 5.6.12-log
 -- PHP Version: 5.4.16
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `libsysdb`
+-- Database: `libsysdb2`
 --
 CREATE DATABASE IF NOT EXISTS `libsysdb` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `libsysdb`;
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `borrowed_material` (
   `transaction_id` int(5) NOT NULL AUTO_INCREMENT,
   `id` int(5) NOT NULL,
   `material_id` int(5) NOT NULL,
-  `is_approved` int(1) NOT NULL,
+  `is_approved` tinyint(1) NOT NULL,
   `date_borrowed` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `due_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`transaction_id`),
@@ -77,12 +77,13 @@ CREATE TABLE IF NOT EXISTS `material` (
   `title` varchar(128) NOT NULL,
   `author` varchar(128) NOT NULL,
   `year` int(4) NOT NULL,
+  `type` varchar(10) NOT NULL,
   `date_added` date NOT NULL,
   `quantity` int(2) NOT NULL,
-  `status` int(1) NOT NULL,
+  `status` varchar(10) NOT NULL,
   `picture` varchar(4) NOT NULL,
   PRIMARY KEY (`material_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
 
 -- --------------------------------------------------------
 
@@ -135,9 +136,29 @@ CREATE TABLE IF NOT EXISTS `reserved_material` (
 CREATE TABLE IF NOT EXISTS `sp_thesis` (
   `material_id` int(5) NOT NULL,
   `adviser` varchar(128) NOT NULL,
-  `type` int(1) NOT NULL,
+  `type` varchar(10) NOT NULL,
   PRIMARY KEY (`material_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `suggest_material`
+--
+
+CREATE TABLE IF NOT EXISTS `suggest_material` (
+  `auxil_id` int(5) NOT NULL AUTO_INCREMENT,
+  `id` int(5) NOT NULL,
+  `title` varchar(128) NOT NULL,
+  `author` varchar(128) NOT NULL,
+  `publisher` varchar(128) NOT NULL,
+  `date_published` int(4) NOT NULL,
+  `type` varchar(10) NOT NULL,
+  `date_suggested` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` varchar(10) NOT NULL,
+  PRIMARY KEY (`auxil_id`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -156,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `user_profile` (
   `school` varchar(128) DEFAULT NULL,
   `studentnumber` varchar(10) DEFAULT NULL,
   `birthday` date DEFAULT NULL,
-  `status` int(1) DEFAULT NULL,
+  `status` varchar(10) DEFAULT NULL,
   `type` varchar(64) DEFAULT NULL,
   `referred_by` varchar(128) DEFAULT NULL,
   `address` varchar(128) DEFAULT NULL,
@@ -164,7 +185,126 @@ CREATE TABLE IF NOT EXISTS `user_profile` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `user_profile`
+--
+
+INSERT INTO `user_profile` (`id`, `username`, `password`, `firstname`, `middleinitial`, `lastname`, `email`, `school`, `studentnumber`, `birthday`, `status`, `type`, `referred_by`, `address`, `picture`) VALUES
+(1, 'theresa', 'password', 'Theresa', 'S', 'Nicdao', 'mtsnicdao@gmail.com', 'UPLB', '2011-56717', '1994-10-29', 'active', 'student', NULL, 'Hermosa, Bataan', ''),
+(2, 'marian', 'password', 'Marian', 'M', 'Alvarez', 'mma@gmail.com', 'UPLB', '2011-56789', '1995-01-13', 'active', 'student', NULL, 'Olongapo City', ''),
+(3, 'nelo', 'password', 'Raphael Nelo', 'S', 'Aguila', 'raphaelnelo.aguila@gmail.com', 'UPLB', '2011-53035', '1994-10-26','pending', 'student', NULL, 'Camarines Norte', ''),
+(4, 'clare', 'password', 'Clare Kathleen', 'L', 'Sumo', 'cklsumo@gmail.com', 'UPLB', '2011-57947', '1995-12-03', 'suspended', 'student', NULL, 'Mindoro', ''),
+(5, 'eim', 'password', 'Eimereen', 'J', 'Alido', 'eimalido@gmail.com', 'UPLB', '2011-57031', '1995-07-13', 'deleted', 'student', NULL, 'Mindoro', '');
+
+--
+-- Dumping data for table `material`
+--
+
+INSERT INTO `material` (`material_id`, `title`, `author`, `year`, `type`, `date_added`, `quantity`, `status`, `picture`) VALUES
+(1, 'The Latext Companion', 'Goossens, Mittelbatch\r\n', 1991, 'book', '2013-01-01', 2, 'onshelf', ''),
+(2, 'Pascal 2nd Ed.', 'Dale,N. & Weems, C.', 1993, 'book', '2013-01-08', 5, 'onshelf', ''),
+(3, 'The C Primer\r\n', 'Hancock, L.', 1998, 'book', '2013-03-13', 3, 'onshelf', ''),
+(4, 'Computer Organization\r\n', 'Hamacher, C. et al', 1990, 'book', '2013-02-14', 4, 'onshelf', ''),
+(5, 'Algorithms\r\n', 'Sedgewick,  R', 1992, 'book', '2013-02-14', 2, 'onshelf', ''),
+(6, 'Using Java\r\n', 'Newman, A/ et al', 2000, 'book', '2013-03-03', 4, 'onshelf', ''),
+(7, 'Discrete Mathematics', 'Johnsonbaugh, R', 2001, 'book', '2013-03-14', 1, 'onshelf', ''),
+(8, 'C++ Unleashed', 'Jess Liberty\r\n', 2003, 'book', '2013-03-25', 3, 'onshelf', ''),
+(9, 'Database Design', 'Wiederhold, G\r\n', 2005, 'book', '2013-03-27', 8, 'onshelf', ''),
+(10, 'Guide To Expert Systems', 'Edmunds, RA', 2008, 'book', '2013-04-13', 7, 'onshelf', ''),
+(11, 'Roundabout Simulation', 'Marriet, V.', 2000, 'other', '2013-03-12', 3, 'onshelf', ''),
+(12, 'Leapfrog Visualisation', 'Wallaby, A.', 2001, 'other', '2013-04-12', 9, 'onshelf', ''),
+(13, 'Game Concept and Design', 'Brown, B.', 2002, 'other', '2013-05-23', 2, 'onshelf', ''),
+(14, 'Robot Modelling Fundamentals\r\n', 'Frathos, P.\r\n', 2010, 'other', '2013-04-25', 9, 'onshelf', ''),
+(15, 'Digital Image Processing Video Compilation\r\n', 'Marriet, V.\r\n', 2011, 'other', '2013-07-07', 8, 'onshelf', ''),
+(16, 'Network and Rerouting', 'Valerie, G.', 2001, 'other', '2013-09-12', 2, 'onshelf', ''),
+(17, 'Data Structures 101', 'Brown, B.', 1990, 'other', '2013-01-09', 4, 'onshelf', ''),
+(18, 'RBG vs. HCI', 'Hale, C. & Williams, H.', 1993, 'other', '2013-09-09', 10, 'onshelf', ''),
+(19, 'Handling Big Data', 'Hughes, V. & Victor, D.', 2011, 'other', '2013-04-02', 3, 'onshelf', ''),
+(20, 'Digital Image Processing Smoke Detection', 'Lauren, F., Zimmerman, N.', 2000, 'other', '2013-04-12', 2, 'onshelf', ''),
+(21, 'D-Zone', 'James, A.', 2009, 'magazine', '2013-09-13', 1, 'onshelf', ''),
+(22, 'Pixelated\r\n', 'Puckerman, N.', 2008, 'magazine', '2013-02-19', 3, 'onshelf', ''),
+(23, 'Software vs Hardware', 'Fabray, Q.', 2007, 'magazine', '2013-05-10', 5, 'onshelf', ''),
+(24, 'OS Nation', 'Hudson F. & Morrison, M.', 2004, 'magazine', '2013-08-10', 3, 'onshelf', ''),
+(25, 'Frontline CLI', 'Daemon, B.', 2003, 'magazine', '2013-11-02', 4, 'onshelf', ''),
+(26, 'Byte Me', 'Giga, B.', 2012, 'magazine', '2013-09-09', 1, 'onshelf', ''),
+(27, 'My Personal Computer', 'Blake, G.', 2003, 'magazine', '2013-07-01', 2, 'onshelf', ''),
+(28, 'Robot World', 'Johnson, J.', 1999, 'magazine', '2013-02-28', 4, 'onshelf', ''),
+(29, 'Malloc Monthly', 'Turon, G.', 1992, 'magazine', '2013-06-01', 15, 'onshelf', ''),
+(30, 'Behind the Screens', 'Black, M.', 1990, 'magazine', '2013-10-13', 8, 'onshelf', ''),
+(31, 'Simulation of the Blood Circulation Inside', 'Manalo, J R G', 1982, 'sp_thesis', '2013-04-13', 1, 'onshelf', ''),
+(32, 'SLIM + V 1.0', 'San Mateo, JE S', 1989, 'sp_thesis', '2013-04-18', 1, 'onshelf', ''),
+(33, 'PLAYMATE: A Graphical User Interface I', 'Deriquito, C R', 1991, 'sp_thesis', '2013-03-31', 1, 'onshelf', ''),
+(34, 'Computation for Discrete', 'Chang, AK F', 1997, 'sp_thesis', '2013-04-01', 1, 'onshelf', ''),
+(35, 'Math Gyver An Educational Game Program', 'Obmasca, A I', 2003, 'sp_thesis', '2013-04-05', 1, 'onshelf', '');
+
+--
+-- Dumping data for table `book`
+--
+
+INSERT INTO `book` (`material_id`, `course_code`, `publisher`) VALUES
+(1, 'CMSC 1', 'ABC Publishing Corp'),
+(2, 'CMSC 11', 'BCD Publishing'),
+(3, 'CMSC 21', 'DC Comics'),
+(4, 'CMSC 100', 'Marvel Publishing'),
+(5, 'CMSC 123', 'SnK Publishing'),
+(6, 'CMSC 22', 'Marvel Publishing'),
+(7, 'CMSC 22', 'Marvel Publishing'),
+(8, 'CMSC 22', 'Marvel Publishing'),
+(9, 'CMSC 127', 'DC Comics'),
+(10, 'CMSC 170', 'BCD Publishing');
+
+--
+-- Dumping data for table `magazine`
+--
+
+INSERT INTO `magazine` (`material_id`, `volume_number`, `month`) VALUES
+(21, '14', 3),
+(22, '1', 9),
+(23, '8', 12),
+(24, '6', 8),
+(25, '9', 1),
+(26, '3', 6),
+(27, '4', 10),
+(28, '5', 2),
+(29, '1', 4),
+(30, '2', 5);
+
+--
+-- Dumping data for table `sp_thesis`
+--
+
+INSERT INTO `sp_thesis` (`material_id`, `adviser`, `type`) VALUES
+(31, 'Pabico', 'sp'),
+(32, 'Jacildo', 'sp'),
+(33, 'Hermocilla', 'thesis'),
+(34, 'Khan', 'thesis'),
+(35, 'Mercado', 'sp');
+
+--
+-- Dumping data for table `other`
+--
+
+INSERT INTO `other` (`material_id`, `type`) VALUES
+(11, 'VCD'),
+(12, 'VCD'),
+(13, 'CD'),
+(14, 'CD'),
+(15, 'Betamax'),
+(16, 'CD'),
+(17, 'CD'),
+(18, 'CD'),
+(19, 'CD'),
+(20, 'CD');
+
+--
+-- Dumping data for table `suggest_material`
+--
+
+INSERT INTO `suggest_material` (`auxil_id`, `id`, `title`, `author`, `publisher`, `date_published`, `type`, `date_suggested`, `status`) VALUES
+(1, 1, 'The Great Book 1', 'Clare Kathleen Sumo', 'The Printing Corp.', 2013, 'book', '2014-01-28 06:29:09', 'pending'),
+(2, 2, 'The Great Book Again', 'Raphael Nelo Aguila', 'My Publishing Inc.', 2014, 'magazine', '2014-01-28 06:29:09', 'pending');
 
 --
 -- Constraints for dumped tables
@@ -213,6 +353,12 @@ ALTER TABLE `reserved_material`
 --
 ALTER TABLE `sp_thesis`
   ADD CONSTRAINT `sp_thesis_ibfk_1` FOREIGN KEY (`material_id`) REFERENCES `material` (`material_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `suggest_material`
+--
+ALTER TABLE `suggest_material`
+  ADD CONSTRAINT `suggest_material_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user_profile` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
