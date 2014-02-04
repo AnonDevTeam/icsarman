@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "welcome";
+$route['default_controller'] = "c_icsarman";
 $route['404_override'] = '';
 
 
