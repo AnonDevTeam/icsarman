@@ -1,0 +1,50 @@
+.error{	
+	font-family:"Lucida Grande",Sans-Serif;
+	font-size:11px;
+	color:#9d0202;
+	position:relative;
+}
+
+#eruname, #erpw{
+	margin-left:72px;
+}
+
+#errpw{
+	margin-left:119px;
+}
+
+#erfname{
+	margin-left:80px;
+}
+
+#ermi{
+	margin-left:90px;
+}
+
+#erlname{
+	margin-left:79px;
+}
+
+#eremail{
+	margin-left:46px;
+}
+
+#erschool{
+	margin-left:54px;
+}
+
+#ersnumber{
+	margin-left:112px;
+}
+
+#erbday{
+	margin-left:63px;
+}
+
+#ertype{
+	margin-left:42px;
+}
+
+#eraddress{
+	margin-left:64px;
+}
