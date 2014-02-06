@@ -1,74 +1,213 @@
-<?xml version="1.0" encoding="EUC-JP"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-   <title>Register</title>
+<!DOCTYPE html>
+<html>
+	
+  <head>
+	<meta charset="UTF-8">
+	<?php include_once "links.html"; ?>
+    <title>Create Account</title>
+	
+	<link rel="stylesheet" type="text/css" href=<?php echo base_url("themes/form_style.css"); ?>> 
+	<script src=<?php echo base_url("lib/jquery-1.11.0.min.js"); ?>></script>
+    <script src=<?php echo base_url("lib/jquery.tools.min.js"); ?>></script>
+  </head>
+
+  <body>
+    <?php $this->load->helper(array('form')); ?>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav" >
+            <li class="active" ><a class="linked" href="">Home</a></li>
+            <li><a href="#about" id="linked">About</a></li>
+            <li><a href="#contact" id="linked">Contact</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="linked">Dropdown <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
+          </ul>
+          <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="linked">Login</a>
+                <div class="dropdown-menu">
+                  <form id="log" action=>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon">Username:</span>
+                        <input type="text" class="form-control" >
+                    </div>
+                    <br/>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-addon">Password:</span>
+                        <input type="text" class="form-control" >
+                    </div><br/>
+                    <input type="submit" class="btn btn-primary btn-sm" id="sub" value="Login"/>
+                  </form>
+                </div>
+            </li>
+            <li><a href="register" id="linked">Create account</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <!--end of fixed navbar-->
+    <br/><br/><br/>
+
+
+    <div class="container middle">
+      <div class="pull-right center">
+	  	
+        <form method="post"  action=<?php echo site_url('verify_register/check_if_exists'); ?> name="form1" id="form1">
+          <fieldset>
+            <legend>SECURITY</legend>					
+            <div class="pull-right">
+            <div class="input-group input-group-sm">
+                        <span class="input-group-addon inlabel">Username:</span>
+                        <input type="text" id="username" name="username" value="<?php echo set_value('username'); ?>" required minlength="2" />						 
+						<p class="err"><?=$error_username;?></p>	
+			</div>				
+			<br/>
+            <div class="input-group input-group-sm">
+                        <span class="input-group-addon inlabel">Password:</span>
+                        <input type="password" id="password" name="password" value="<?php echo set_value('password'); ?>" required minlength="2"/>
+			</div>
+			<br/>
+            <div class="input-group input-group-sm">
+                        <span class="input-group-addon inlabel">Re-enter Password:</span>
+                        <input type="password" id="repassword" name="repassword" value="<?php echo set_value('repassword'); ?>" required/>
+						<div id="erdiv"></div>
+			</div>			
+			<br/>
+			</div>
+          </fieldset>
+          <fieldset>
+            <legend>USER INFORMATION</legend>
+            <div class="input-group input-group-sm">
+                        <span class="input-group-addon inlabel">First Name:</span>
+                        <input type="text" name="firstname" value="<?php echo set_value('firstname'); ?>" required/>
+            </div>
+			<br/>
+            <div class="input-group input-group-sm">
+                        <span class="input-group-addon inlabel">Middle Initial:</span>
+                        <input type="text" name="middleinitial" value="<?php echo set_value('middleinitial'); ?>" required/>
+            </div>
+			<br/>
+            <div class="input-group input-group-sm">
+                        <span class="input-group-addon inlabel">Last Name:</span>
+                        <input type="text" name="lastname" value="<?php echo set_value('lastname'); ?>" required/>
+            </div>
+			<br/>
+			<div class="input-group input-group-sm">
+                        <span class="input-group-addon inlabel">Email:</span>
+                        <input type="email" name="email" value="<?php echo set_value('email'); ?>" required/>
+						<p class="err"><?=$error_email;?></p>	
+            </div>			
+			<br/>
+            <div class="input-group input-group-sm">
+                        <span class="input-group-addon inlabel">Birthday:</span>
+                        <input type="date" name="birthday" value="<?php echo set_value('birthday'); ?>" required/>
+            </div>
+			<br/>
+            <div class="pull-right">
+            <div class="input-group input-group-sm">
+                        <span class="input-group-addon inlabel">Type:</span>                        
+						<select id="type" name="type" >
+							<option value="Student" <?php echo set_select('type', 'Student', TRUE); ?>>Student</option>
+							<option value="Faculty" <?php echo set_select('type', 'Faculty'); ?>>Faculty</option>                    
+						</select>   
+            </div>
+			<br/>
+            <div class="input-group input-group-sm" id="num">
+                        <span class="input-group-addon inlabel" id="studnumtxt" >Student Number:</span>
+                        <input type="text" id="studnum" name="studentnumber" maxlength="10" value="<?php echo set_value('studentnumber'); ?>" placeholder="0000-00000" pattern="[0-9]{4}[-][0-9]{5}" required/>						
+						<p class="err" id="studnumerr"><?=$error_snumber;?></p>
+			</div>		
+			<br/>
+            <div class="input-group input-group-sm">
+                        <span class="input-group-addon inlabel">School:</span>
+                        <input type="text" name="school" value="<?php echo set_value('school'); ?>" required/>
+            </div>
+			<br/>
+            <div class="input-group input-group-sm">
+                        <span class="input-group-addon inlabel">Address:</span>
+                        <input type="text" name="address" value="<?php echo set_value('address'); ?>" required/>
+            </div>
+            </div>
+          </fieldset><br/>
+          <input type="submit" class="btn btn-primary btn-sm" name="register" value="Register" />
+        </form>
+      </div>
+      <div class="aside sideb" >
+        <p>The side contents will be here: instructions.</p>
+      </div>
+    </div>
    
-   <link href="<?php echo base_url(); ?>application/public/css/style.css" rel="stylesheet" type="text/css"  />
- </head>
- <body>
- 
- <?php echo form_open('verify_register'); ?>
-   <h1>Register</h1>
-   <form name="formView" method="post" action="">   
-     <label for="username">Username:</label>     
-	 <input type="text" size="20" id="username" name="username" maxlength="15" value="<?php echo set_value('username'); ?>" style="background-color:<?php if(form_error('username') !=='') { echo 'LightSalmon'; }?>" />     
-	 <?php echo form_error('username', '<div class="error" id="eruname">', '</div>'); ?> 	 
-	 <br/>
-     <label for="password">Password:</label>
-     <input type="password" size="20" id="password" name="password" maxlength="40" value="<?php echo set_value('password'); ?>" style="background-color:<?php if(form_error('password') !=='') { echo 'LightSalmon'; }?>" />
-	 <?php echo form_error('password', '<div class="error" id="erpw">', '</div>'); ?>
-     <br/>
-     <label for="repassword">Retype Password:</label>
-     <input type="password" size="20" id="repassword" name="repassword" maxlength="40" value="<?php echo set_value('repassword'); ?>" style="background-color:<?php if(form_error('repassword') !=='') { echo 'LightSalmon'; }?>" />
-     <?php echo form_error('repassword', '<div class="error" id="errpw">', '</div>'); ?>
-	 <br/>
-     <label for="firstname">First Name:</label>
-     <input type="text" size="20" id="firstname" name="firstname" maxlength="64" value="<?php echo set_value('firstname'); ?>" style="background-color:<?php if(form_error('firstname') !=='') { echo 'LightSalmon'; }?>" />
-     <?php echo form_error('firstname', '<div class="error" id="erfname">', '</div>'); ?>
-	 <br/>
-     <label for="middleinitial">Middle Initial:</label>
-     <input type="text" size="20" id="middleinitial" name="middleinitial" maxlength="2" value="<?php echo set_value('middleinitial'); ?>" style="background-color:<?php if(form_error('middleinitial') !=='') { echo 'LightSalmon'; }?>" />
-     <?php echo form_error('middleinitial', '<div class="error" id="ermi">', '</div>'); ?>
-	 <br/>
-     <label for="lastname">Last Name:</label>
-     <input type="text" size="20" id="lastname" name="lastname" maxlength="64" value="<?php echo set_value('lastname'); ?>" style="background-color:<?php if(form_error('lastname') !=='') { echo 'LightSalmon'; }?>" />
-     <?php echo form_error('lastname', '<div class="error" id="erlname">', '</div>'); ?>
-	 <br/>
-     <label for="type">Type:</label>
-	 <select name="type" style="background-color:<?php if(form_error('type') !=='') { echo 'LightSalmon'; }?>" >
-		<option value="" <?php echo set_select('type', '', TRUE); ?>></option>
-		<option value="Student" <?php echo set_select('type', 'Student'); ?>>Student</option>
-		<option value="Faculty" <?php echo set_select('type', 'Faculty'); ?>>Faculty</option>
-		<option value="Outsider" <?php echo set_select('type', 'Outsider'); ?>>Outsider</option>					
-	 </select>	 
-     <?php echo form_error('type', '<div class="error" id="ertype">', '</div>'); ?>
-	 <br/>
-     <label for="studentnumber">Student Number:</label>
-     <input type="text" size="20" id="studentnumber" name="studentnumber" maxlength="10" value="<?php echo set_value('studentnumber'); ?>" style="background-color:<?php if(form_error('studentnumber') !=='') { echo 'LightSalmon'; }?>" />
-     <?php echo form_error('studentnumber', '<div class="error" id="ersnumber">', '</div>'); ?>
-	 <br/>
-     <label for="birthday">Birthday:</label>
-     <input type="date" size="20" id="birthday" name="birthday" value="<?php echo set_value('birthday'); ?>" style="background-color:<?php if(form_error('birthday') !=='') { echo 'LightSalmon'; }?>" />
-     <?php echo form_error('birthday', '<div class="error" id="erbday">', '</div>'); ?>
-	 <br/>
-     <label for="email">Email:</label>
-     <input type="text" size="20" id="email" name="email" maxlength="64" value="<?php echo set_value('email'); ?>" style="background-color:<?php if(form_error('email') !=='') { echo 'LightSalmon'; }?>" />
-     <?php echo form_error('email', '<div class="error" id="eremail">', '</div>'); ?>
-	 <br/>
-     <label for="school">School:</label>
-     <input type="text" size="20" id="school" name="school" maxlength="128" value="<?php echo set_value('school'); ?>" style="background-color:<?php if(form_error('school') !=='') { echo 'LightSalmon'; }?>" />
-     <?php echo form_error('school', '<div class="error" id="erschool">', '</div>'); ?>	 
-	 <br/>
-     <label for="address">Address:</label>
-     <input type="text" size="20" id="address" name="address" maxlength="128" value="<?php echo set_value('address'); ?>" style="background-color:<?php if(form_error('address') !=='') { echo 'LightSalmon'; }?>" />
-     <?php echo form_error('address', '<div class="error" id="eraddress">', '</div>'); ?>
-	 <br/>
-     <input type="submit" name="submit" value="Register"/>
-     <br/>
-     <a href="login">Login</a>
-	 
-   </form>
-   
+    <?php include_once "footer.html" ?>  
+	
  </body>
+
+ <script>
+		$(function(){
+			$(window).load(
+				function () {
+					var val = $( "#type option:selected" ).text();
+				    //var val =  $('option:selected', this).text();
+					$('#num').empty();
+					if(val === "Student"){
+						$('#num').append('<span class="input-group-addon inlabel" id="studnumtxt" >Student Number:</span>' +
+										 '<input type="text" id="studnum" name="studentnumber" maxlength="10" value="<?php echo set_value('studentnumber'); ?>" placeholder="0000-00000" pattern="[0-9]{4}[-][0-9]{5}" required/>' +						
+						                 '<p class="err" id="studnumerr"><?=$error_snumber;?></p>');
+					}
+					else if(val === "Faculty"){
+						$('#num').append('<span class="input-group-addon inlabel" id="empnumtxt" >Employee Number:</span>' +
+										 '<input type="text" id="empnum" name="employeenumber" maxlength="9" value="<?php echo set_value('employeenumber'); ?>" placeholder="000000000" pattern="[0-9]{9}" required/>' +						
+										 '<p class="err" id="empnumerr"><?=$error_snumber;?></p>');
+					}
+		    });
+			$('#type').on("change", 
+				function(){
+					var val = $( "#type option:selected" ).text();
+				    //var val =  $('option:selected', this).text();
+					$('#num').empty();
+					if(val === "Student"){
+						$('#num').append('<span class="input-group-addon inlabel" id="studnumtxt" >Student Number:</span>' +
+										 '<input type="text" id="studnum" name="studentnumber" maxlength="10" value="<?php echo set_value('studentnumber'); ?>" placeholder="0000-00000" pattern="[0-9]{4}[-][0-9]{5}" required/>' +						
+						                 '<p class="err" id="studnumerr"><?=$error_snumber;?></p>');
+					}
+					else if(val === "Faculty"){
+						$('#num').append('<span class="input-group-addon inlabel" id="empnumtxt" >Employee Number:</span>' +
+										 '<input type="text" id="empnum" name="employeenumber" maxlength="9" value="<?php echo set_value('employeenumber'); ?>" placeholder="000000000" pattern="[0-9]{9}" required/>' +						
+										 '<p class="err" id="empnumerr"><?=$error_snumber;?></p>');
+					}				
+			});
+			$('#form1').submit(
+				function(){							
+					var password = $('#password').val();
+					var repassword = $('#repassword').val();
+					
+					$('#erdiv').empty();
+					//console.log(password);
+					//console.log(repassword);
+					if(password !== repassword  ){
+						$('#erdiv').append('<p class="err">*must match password</p>');
+						//$('#repassword').focus();
+						return false;
+					}
+			});	
+			
+		});
+	 </script>
+	 
 </html>

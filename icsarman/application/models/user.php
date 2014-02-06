@@ -18,5 +18,10 @@ Class User extends CI_Model
      return false;
    }
  }
+ 
+ function register($data)
+ { 
+        $this->db->insert('user_profile', $data);
+ }
 }
 ?>

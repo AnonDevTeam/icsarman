@@ -5,38 +5,79 @@ class Verify_Register extends CI_Controller {
    parent::__construct();
  }
  
-    public function index()
-    {
-        $this->load->helper(array('form', 'url'));
-        $this->load->library('form_validation');
-		$this->form_validation->set_message('required', '*required');
-		$this->form_validation->set_message('min_length', '*too short');
-		$this->form_validation->set_message('matches', '*must match password');
-		$this->form_validation->set_message('is_unique', '*must be unique');
-		$this->form_validation->set_message('valid_email', '*must be valid');
-		$this->form_validation->set_message('regex_match', '*not in correct format');
-        $this->form_validation->set_rules('username', 'username', 'required|is_unique[user_profile.username]|min_length[4]');
-        $this->form_validation->set_rules('password', 'password', 'required|min_length[6]');
-		$this->form_validation->set_rules('repassword', 'repassword', 'required|matches[password]');
-        $this->form_validation->set_rules('firstname', 'firstname', 'required|min_length[1]');
-        $this->form_validation->set_rules('middleinitial', 'middleinitial', 'required|min_length[1]');
-        $this->form_validation->set_rules('lastname', 'lastname', 'required|min_length[1]');
-		$this->form_validation->set_rules('type', 'type', 'required');
-		$this->form_validation->set_rules('studentnumber', 'studentnumber', 'required|regex_match[/^\d{4}[\-]\d{5}$/]');
-		$this->form_validation->set_rules('birthday', 'birthday', 'required');
-        $this->form_validation->set_rules('email', 'email', 'required|valid_email');
-        $this->form_validation->set_rules('school', 'school', 'required');        
-        $this->form_validation->set_rules('address', 'address', 'required');
-        
-        if(!$this->form_validation->run())
-        {
-            $this->load->view('form_view');
-        }
-        else
-        {
-			$this->load->model('register_model');
-            $this->load->view('form_success');
-        }
-    }
+	public function createUser(){	
+		$userdata['username'] = $this->input->post('username');
+        $userdata['password'] = sha1($this->input->post('password'));
+        $userdata['firstname'] = $this->input->post('firstname');
+        $userdata['middleinitial'] = $this->input->post('middleinitial');
+        $userdata['lastname'] = $this->input->post('lastname');
+        $userdata['email'] = $this->input->post('email');
+		$userdata['birthday'] = $this->input->post('birthday');
+		$userdata['type'] = $this->input->post('type');
+        $userdata['school'] = $this->input->post('school');        
+        $userdata['address'] = $this->input->post('address');
+        $userdata['status'] = $this->input->post('status');        
+        $userdata['referred_by'] = $this->input->post('referred_by');		
+		
+		$s = $this->input->post('studentnumber');
+		$e = $this->input->post('employeenumber');
+		if($s)
+			$userdata['studentnumber'] = $this->input->post('studentnumber');
+		else if($e)
+			$userdata['studentnumber'] = '0'.$this->input->post('employeenumber');
+
+			
+		$this->load->model('user');
+		//var_dump($data);
+		$this->user->register($userdata);		
+		//$this->load->view('form_success');
+		redirect('home', 'refresh');
+		//$this->load->view('login_view');
+	}
+	
+	public function check_if_exists(){
+		$data['error_username'] = '';
+		$data['error_snumber'] = '';
+		$data['error_email'] = '';		
+		
+		$userdata['username'] = $this->input->post('username');
+		$userdata['email'] = $this->input->post('email');
+		$stud = $this->input->post('studentnumber');
+		$emp = $this->input->post('employeenumber');
+		if($stud){
+			$userdata['studentnumber'] = $this->input->post('studentnumber');
+			$data['temp'] = '*student number already exists';
+		}else if($emp){
+			$userdata['studentnumber'] = '0'.$this->input->post('employeenumber');		
+			$data['temp'] = '*employee number already exists';
+		}
+		
+		$this->db->select('username');
+		$this->db->from('user_profile');
+		$this->db->where('username',$userdata['username']);
+		$u = $this->db->get();
+		$this->db->select('studentnumber');
+		$this->db->from('user_profile');
+		$this->db->where('studentnumber',$userdata['studentnumber']);
+		$s = $this->db->get();
+		$this->db->select('email');
+		$this->db->from('user_profile');
+		$this->db->where('email',$userdata['email']);
+		$e = $this->db->get();
+		
+		if($u->result()||$s->result()||$e->result()){
+			if($u->result())
+				$data['error_username'] = '*username already exists';			
+			if($s->result())
+				$data['error_snumber'] = $data['temp'];				
+			if($e->result())
+				$data['error_email'] = '*email already exists';				
+			
+			$this->load->view('form_view',$data);
+			return;
+		}else{
+			$this->createUser();
+		}
+	}
 }
-?>
+?>	

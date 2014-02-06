@@ -8,25 +8,41 @@ class Verify_Login extends CI_Controller {
  function index()
  {
    //This method will have the credentials validation
-   $this->load->library('form_validation'); 
-   $this->form_validation->set_rules('username', 'username', 'trim|required|xss_clean');
-   $this->form_validation->set_rules('password', 'password', 'trim|required|xss_clean|callback_check_database');
-   if($this->form_validation->run() == FALSE)
+   //$this->load->helper(array('form', 'url'));
+   $this->load->library('form_validation');
+   //$this->form_validation->set_message('required', '*required');
+   //$this->form_validation->set_message('min_length', '*too short');
+   $this->form_validation->set_rules('user', 'user', 'callback_check_database');
+   $this->form_validation->set_rules('pw', 'pw', 'callback_check_database');
+   //if($this->form_validation->run() == FALSE)
+   //if($this->check_database($this->input->post('pw')))
+   if($this->check_database($this->input->post('pw'))){
+	redirect('home');
+   
+   }else if($this->form_validation->run() == FALSE){
+	$this->load->view('login_view');
+   }
+   
+   /*
    {
-     //Field validation failed.  User redirected to login page
-     $this->load->view('login_view');
+	 $this->load->view('login_view');
+     //header('Location:'.site_url('home'));
    }
    else
    {
-     //Go to private area
-     redirect('home', 'refresh');
-   }
+	 if($this->check_database($this->input->post('pw'))){
+		redirect('home');
+	 }else{
+		
+	 }
+   }*/
 
  }
- function check_database($password)
+ function check_database($pw)
  {
    //Field validation succeeded.  Validate against database
-   $username = $this->input->post('username');
+   $password = sha1($pw);
+   $username = $this->input->post('user');
    //query the database
    $result = $this->user->login($username, $password);
    if($result)
@@ -40,11 +56,11 @@ class Verify_Login extends CI_Controller {
        );
        $this->session->set_userdata('logged_in', $sess_array);
      }
-     return TRUE;
+     return true;
    }
    else
    {
-     $this->form_validation->set_message('check_database', 'Invalid username or password');
+     $this->form_validation->set_message('check_database', '*invalid username or password');
      return false;
    }
  }

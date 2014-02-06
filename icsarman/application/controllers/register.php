@@ -6,8 +6,10 @@ class Register extends CI_Controller {
  }
  function index()
  {
-   $this->load->helper(array('form'));
-   $this->load->view('form_view');
+   $data['error_username'] = '';
+   $data['error_snumber'] = '';
+   $data['error_email'] = '';
+   $this->load->view('form_view',$data);
  }
 }
 

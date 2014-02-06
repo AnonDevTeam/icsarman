@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Home</title>
-		<link rel="stylesheet" type="text/css" href=<?php echo base_url("themes/form_style.css"); ?>> 		
+		<title>Home</title>		
 	</head>
 	<body>
 		<?php $this->load->helper(array('form'));?>
@@ -26,26 +25,7 @@
 	              <li><a href="">Library Information</a></li>
 	            </ul>
 	            <ul class="nav navbar-nav navbar-right">
-	              <li class="dropdown">
-		             <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="linked">Sign in</a>
-		                <div class="dropdown-menu">
-		                  <form id="log" method="post" action="verify_login">
-						  <?php echo form_open('verify_login'); ?>
-		                    <div class="input-group input-group-sm">
-		                        <span class="input-group-addon">Username:</span>
-		                        <input type="text" class="form-control" name="user" value="<?php echo set_value('user'); ?>" required>
-		                    </div>					
-		                    <br/>
-		                    <div class="input-group input-group-sm">
-		                        <span class="input-group-addon">Password:</span>
-		                        <input type="password" class="form-control" name="pw" value="<?php echo set_value('pw'); ?>" required>
-		                    </div>
-							<?php echo form_error('pw', '<div class="err_p" >', '</div>'); ?>
-							<br/>
-		                    <input type="submit" class="btn btn-primary btn-sm" id="sub" value="Login"/>
-		                  </form>
-		              </div>
-		          </li>
+	              <li><a href="<?php echo site_url('home'); ?>">Welcome, <?php echo $username?>!</a></li>
 	              <li>
 					<form action=<?php echo site_url('home/logout'); ?>>
 						<input type="submit" class="btn btn-primary" id="sub" value="Sign out" />
