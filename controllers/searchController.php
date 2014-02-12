@@ -15,19 +15,21 @@
 		}
 		
 		function index(){
-			$this->load->view('search_index');
+			$this->load->view('search');
 		}
 		
 		public function searchMaterial(){	//kapag kinclick yung GO BUTTON
 		$arr = array();
 		$arr2 =array();
 		$id = array();
+
 		$page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
 		
 			if($_GET['type'] == 'All'){	//kapag ALL ANG PINILI SA DROPDOWN ---- search lahat ang peg T.T hindi pa tapos to
 				$result = $this->searchModel->searchAll($_GET['search_input']);
 				
 				if($result['book'] == NULL && $result['sp_thesis'] == NULL && $result['material'] == NULL && $result['book_like'] == NULL && $result['sp_thesis_like'] == NULL && $result['material_like'] == NULL){	//if no material id  fetched
+					var_dump($_GET);
 					$this->searchTag($_GET['search_input']);	//it will search on the material tags
 				}
 				else{	//sa bawat is statement, kinukuha lang yung mga material_ids and pinupush sa array na $id
@@ -76,6 +78,9 @@
 			}
 			
 			else{	//kapag BOOK | MAGAZINE|SP_THESIS|OTHER yung pinili sa dropdown
+				echo $_GET['type'];
+				
+				echo $_GET['search_input'];
 				$result = $this->searchModel->searchTable($_GET['type'], $_GET['search_input']);
 				
 				if($result['table'] == NULL && $result['table_like'] == NULL && $result['material'] == NULL && $result['material_like'] == NULL)
@@ -183,14 +188,15 @@
 				$data["links"] = $this->pagination->create_links();
 
 
-			$this->load->view("search_index", $data);
+			$this->load->view("search", $data);
 		}
 		
 		function search(){
 			$data = $_POST['input'];
 			$type = 1; //type
 			$count = 0; //count
-			$max = 5;$num=0;
+			$max = 5;
+			$num=0;
 			echo "<div style=\"width:150px;\">";
 
 			//constraints
@@ -220,27 +226,84 @@
 		}
 		
 		function checkStudent(){
-			$stdnum = $_POST['stdnum'];
-			$name = $_POST['name'];
-			$id = $_POST['id'];
-			$result_profile = $this->searchModel->searchStud($name, $stdnum);
-			$mat_id = $this->searchModel->getMaterial($id);
-			$count = count($result_profile);
-
-			if ($result_profile == 0)
-				echo "</br></br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspStudent Number ". $stdnum ." does not exist.";
-			else{
-				//get the material_id of book and decrease its quantity
-				$quantity =  (integer)$mat_id[0]->quantity;
-				$matId = (integer)$mat_id[0]->material_id;
-				$quantity = $quantity-1;
-				$user_id = (integer)$result_profile[0]->id;
-				$this->searchModel->updateReserve($user_id , $matId);
-				$this->searchModel->updateTable($quantity, $matId);
-
-			}	
 			
-		}		
+			
+			
+			if($this->session->userdata('logged_in')){
+				$stdnum = $_POST['stdnum'];
+				$name = $_POST['name'];
+				$id = $_POST['id'];
+				$result_profile = $this->searchModel->searchStud($name, $stdnum);
+				$mat_id = $this->searchModel->getMaterial($id);
+				$count = count($result_profile);
+
+				if ($result_profile == 0)
+					echo "</br></br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspStudent Number ". $stdnum ." does not exist.";
+				else{
+					//get the material_id of book and decrease its quantity
+					$quantity =  (integer)$mat_id[0]->quantity;
+					$matId = (integer)$mat_id[0]->material_id;
+					$quantity = $quantity-1;
+					$user_id = (integer)$result_profile[0]->id;
+					$this->searchModel->updateReserve($user_id , $matId);
+					$this->searchModel->updateTable($quantity, $matId);
+
+				}	
+			}else{
+			
+				echo "</br>You are not logged in! </br>"
+			
+			}
+			
+			
+			/*
+			eto yung ginawa ni cj
+			if( !(isset($_SESSION['logged_in'])) ) {
+				echo "<br/>You are not logged in<br/>";
+			}
+			
+			else {
+			
+				$stdnum = $_POST['stdnum'];
+				$name = $_POST['name'];
+				$id = $_POST['id'];
+				$result_profile = $this->searchModel->searchStud($name, $stdnum);
+				$mat_id = $this->searchModel->getMaterial($id);
+				$count = count($result_profile);
+
+				if ($result_profile == 0)
+					echo "</br></br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspStudent Number ". $stdnum ." does not exist.";
+				else{
+					//get the material_id of book and decrease its quantity
+					$quantity =  (integer)$mat_id[0]->quantity;
+					$matId = (integer)$mat_id[0]->material_id;
+					$quantity = $quantity-1;
+					$user_id = (integer)$result_profile[0]->id;
+					$this->searchModel->updateReserve($user_id , $matId);
+					$this->searchModel->updateTable($quantity, $matId);
+
+				}	
+			}*/
+			
+		}
+
+		function findStudent(){
+			$stdnum = $this->input->post('stdnum');
+			$name   = $this->input->post('name');
+			$id = $this->input->post('id');
+
+
+			$exists = $this->searchModel->checkStudentNumber($stdnum,$name);
+
+			if($exists){
+				echo 1;
+			}
+			else{
+				//do your reservation queries here
+				echo 0;
+			}
+
+		}
 	}
 
 ?>
