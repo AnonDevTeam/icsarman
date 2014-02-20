@@ -3,10 +3,11 @@
 <html>
 	<head>
 		<title>User Integration - A*DevTeam</title>
-		<link rel="stylesheet" type="text/css" href=<?php echo base_url("themes/css/bootstrap.min.css"); ?>>
-		<script type="text/javascript" src="<?= base_url("themes/js/jquery-2.0.3.js"); ?>"> </script>
-		<script type="text/javascript" src="<?= base_url("themes/js/bootstrap.min.js"); ?>"></script>
-		<script type="text/javascript" src="<?= base_url("themes/js/user_profile.js"); ?>"></script>
+		<link rel="stylesheet" type="text/css" href=<?php echo base_url("css/bootstrap.min.css"); ?>>
+		<link rel="stylesheet" type="text/css" href="<?= base_url("css/styles.css"); ?>" />
+		<script type="text/javascript" src="<?= base_url("js/jquery-2.0.3.js"); ?>"> </script>
+		<script type="text/javascript" src="<?= base_url("js/bootstrap.min.js"); ?>"></script>
+		<script type="text/javascript" src="<?= base_url("js/user_profile.js"); ?>"></script>
 	</head>
 	<body>
 		<nav>
@@ -22,10 +23,10 @@
 			<div>
 				<?php
 					if($info->picture!=""){
-						echo "<img style=\"width:200px;height:200px;\" src=".base_url("uploads/images/".$info->id.$info->picture)." />";
+						echo "<img style=\"width:200px;height:200px;\" src=".base_url("images/".$info->id.$info->picture)." />";
 					}
 					else{
-						echo "<img style=\"width:200px;height:200px;\" src=".base_url("/uploads/images/default.jpg")." />";
+						echo "<img style=\"width:200px;height:200px;\" src=".base_url("images/default.jpg")." />";
 					}
 				?>
 				<a data-toggle="modal" data-target="#changepic" href="">Change</a>
@@ -181,5 +182,6 @@
 				</div>
 			</div>
 		</div>
+		<script type="text/javascript" src="<?= base_url("js/icsarman.js"); ?>"></script>
 	</body>
 </html>

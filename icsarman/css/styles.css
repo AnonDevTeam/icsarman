@@ -1,0 +1,193 @@
+html{
+	font-family: 'Trebuchet MS';
+}
+
+body{
+	margin:0;
+}
+
+/* v_user_material */
+
+.due_alert {
+	background: rgb(255,200,200);
+}
+
+.material_list:hover {
+	cursor: pointer;
+	background: rgb(210,200,200);
+}
+
+/* v_user_search */
+
+#search_input{
+	width: 15em;
+	height: 1.5em;
+	padding-left: 0.2em;
+}
+
+#suggest_material{
+	
+	position: absolute;
+	background: #ffffff;
+	top: 3em;
+}
+
+.suggest_out {
+	border-bottom: 1px solid #d0d0d0;
+	border-left: 1px solid #d0d0d0;
+	border-right: 1px solid #d0d0d0;
+	width: 12.8em;
+	padding:0px;
+}
+
+.suggest_out:hover {
+	background-color:#333344;
+	cursor:pointer;
+	color: #ffffff;
+}
+
+.material_info{
+	border: 1px solid black;
+	padding: 10px 10px;
+	margin: 0 auto 0 auto; 
+	width:55em;
+	height:18.5em;
+/*	border-top: 1px solid black;
+	border-bottom: 1px solid black;*/
+}
+
+.material_image{
+	width:100%;
+	height:100%;
+}
+.status_div{
+	float:right; 
+	padding:5px 5px;
+	margin-bottom: 5px;
+}
+
+.status_div p{
+	margin: 0.2em;
+}
+
+.image_div{
+	width: 14em;
+	float:left;
+	margin-bottom: 10px;
+	height: 18em;
+}
+
+.material_data{
+	padding: 10px 10px;
+	width:75%;
+	margin-left: 15em;
+}
+
+.button_div{
+	margin-top: 1em;
+	float:right;
+}
+
+.button_div button{
+	width: 8em;
+	height: 2.3em;
+}
+
+.mat{
+	font-family: 'Trebuchet MS';
+}
+
+.material_data p{
+	margin: 0.5em;
+}
+
+.mat_title p{
+	margin-top: 0;
+	font-size: 1.5em;
+}
+
+.mat_volume, .mat_month, .mat_author, .mat_publisher,
+.mat_year, .mat_type, .mat_quantity, .mat_ccode, .mat_adviser{
+	margin-left: 2em;
+	margin-top: 0.25em;
+	margin-bottom: 0.25em;
+}
+
+.pagination{
+	margin: 2em auto;
+}
+
+.pagination a, #currpage {
+	font-family: 'Trebuchet MS';
+	font-size: 1.5em;
+	color: #0b77c8;
+	text-decoration: none;
+}
+
+#currpage{
+	color: #000000;
+}
+
+#reserve_popup{
+	display: none;
+	float: left;
+	position:fixed;
+	border:1px solid black;
+	background-color: white;
+	left:28em;
+	top:8em;
+	padding:3em;
+	padding-bottom: 3em;
+}
+
+#borrow_popup{
+	display:none;
+	float: left;
+	position:fixed;
+	border:1px solid black;
+	background-color: white;
+	left:28em;
+	top:8em;
+	padding:3em;
+	padding-bottom: 3em;
+}
+
+#borrow_due{
+	display:none;
+}
+
+#status_popup{
+	display:none;
+	float: left;
+	position:fixed;
+	border:1px solid black;
+	background-color: white;
+	left:26em;
+	top:8em;
+	padding:3em;
+	padding-bottom: 3em;
+}
+
+#overlap{
+	display: none;
+	background-color:rgba(0,0,0,0.8);
+	float:left;
+	position:fixed;
+	width: 100%;
+	height: 100%;
+}
+#first{
+	font-size: 1.5em;
+}
+
+#previous{
+	font-size: 1.5em;
+}
+
+#next{
+	font-size: 1.5em;
+}
+
+#last{
+	font-size: 1.5em;
+}

@@ -3,19 +3,10 @@
 <html>
 	<head>
 		<title>User Integration - A*DevTeam</title>
-		<script type="text/javascript" src="<?= base_url("themes/js/jquery-2.0.3.js"); ?>"> </script>
-		<script type="text/javascript" src="<?= base_url("themes/js/bootstrap.min.js"); ?>"></script>
-		<script type="text/javascript" src="<?= base_url("themes/js/user_material.js"); ?>"></script>
-		<style type="text/css">
-			.due_alert {
-				background: rgb(255,200,200);
-			}
-
-			.material_list:hover {
-				cursor: pointer;
-				background: rgb(210,200,200);
-			}
-		</style>
+		<script type="text/javascript" src="<?= base_url("js/jquery-2.0.3.js"); ?>"> </script>
+		<script type="text/javascript" src="<?= base_url("js/bootstrap.min.js"); ?>"></script>
+		<script type="text/javascript" src="<?= base_url("js/user_material.js"); ?>"></script>
+		<link rel="stylesheet" type="text/css" href="<?= base_url("css/styles.css"); ?>" />
 	</head>
 	<body>
 		<nav>
@@ -89,5 +80,6 @@
 				<?php endforeach; ?>
 			</div>
 		</div>
+		<script type="text/javascript" src="<?= base_url("js/icsarman.js"); ?>"></script>
 	</body>
 </html>
