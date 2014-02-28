@@ -1,0 +1,1 @@
+<p style="color:blue;"><i> Type in the keywords and press 'Go'.<br/> You may specify what kind of material you're searching for: books, magazines, etc.</i></p>

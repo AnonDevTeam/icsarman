@@ -1,0 +1,3 @@
+<p style="color:blue;"><i> Type in the keywords and press 'Go'.<br/> You may specify what kind of material you are searching for. Just click the drop down menu then select the type of material. If you choose 'All', which is selected by default, all tables will be searched regardless of the type of the material, else only the table corresponding to the material type you chose will be searched.<br/><br/>
+Next, type in the keywords for the material. Keywords can be title, author, publisher, year published or even the first letter of the material or the author. Materials can also be searched using tags. Every material has their own tags that helps in identifying the material.<br/><br/>
+After choosing the type of material and typing the keywords, now press 'Go'!.</i></p>
